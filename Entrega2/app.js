@@ -1,63 +1,49 @@
-import fs, { writeFile } from 'fs';
-import { createFile, readFile, updateFile, deleteFile } from './fileSystem.js';
-import ProductManager from './ProductManager.js';
+import ProductManager from "./ProductManager.js";
 
-const FILE_NAME = './ejemploJSON.txt';
-
-async function main() {
-     // Check if the file exists and if it doesnt, create it
-    const existFile = fs.existsSync(FILE_NAME);
-    if (!existFile) {
-        await createFile(FILE_NAME);
-        await readFile(FILE_NAME);
-    }
-
+async function init() {
     const productManager = new ProductManager();
 
-    // Agrega 3 productos al archivo
-    try {
-        const product1 = productManager.addProduct("Product 1", "Description 1", 20.99, "thumbnail1.jpg", "P1", 100);
-        console.log("New Product 1:", product1);
-
-        const product2 = productManager.addProduct("Product 2", "Description 2", 15.49, "thumbnail2.jpg", "P2", 50);
-        console.log("New Product 2:", product2);
-
-        const product3 = productManager.addProduct("Product 3", "Description 3", 30.00, "thumbnail3.jpg", "P3", 75);
-        console.log("New Product 3:", product3);
-
-        // Actualiza el archivo con los 3 productos
-        await createFile(JSON.stringify(productManager.getProduct(), null, 2), FILE_NAME);
-    } catch (error) {
-        console.error("Error adding product:", error.message);
+    const product1 = {
+        title: "Producto 1",
+        description: "Descripcion 1",
+        price: 100,
+        thumbnail: "Thumbnail 1",
+        code: "Code 1",
+        stock: 10
     }
-
-    // Agrega un cuarto producto al archivo
-    try {
-        const addedProduct = productManager.addProduct("Product 4", "Description 4", 25.00, "thumbnail4.jpg", "P4", 50);
-        console.log("New Product 4:", addedProduct);
-
-        // Actualiza el archivo con los 4 productos
-        await updateFile(JSON.stringify(productManager.getProductById(addedProduct.id), null, 2), FILE_NAME);
-    } catch (error) {
-        console.error("Error adding product:", error.message);
+    const product2 = {
+        title: "Producto 2",
+        description: "Descripcion 2",
+        price: 200,
+        thumbnail: "Thumbnail 2",
+        code: "Code 2",
+        stock: 20
     }
-
-    // Llama a todos los productos
-    const allProducts = productManager.getProduct();
-    console.log("All Products:", allProducts);
-
-    // Llama a un producto por ID
-    try {
-        const productById = productManager.getProductById(3);
-        console.log("Product by ID:", productById);
-    } catch (error) {
-        console.error("Error getting product by ID:", error.message);
+    const product3 = {
+        title: "Producto 3",
+        description: "Descripcion 3",
+        price: 300,
+        thumbnail: "Thumbnail 3",
+        code: "Code 3",
+        stock: 30
     }
+    productManager.addProduct(product1.title, product1.description, product1.price, product1.thumbnail, product1.code, product1.stock);
+    productManager.addProduct(product2.title, product2.description, product2.price, product2.thumbnail, product2.code, product2.stock);
+    // productManager.addProduct(product3.title, product3.description, product3.price, product3.thumbnail, product3.code, product3.stock);
 
-    console.log("Existe el archivo: ", existFile);
+    // const updatedData = {
+    //     title: "Updated Product Title",
+    //     price: 150,
+    //     stock: 25
+    // };
+    // productManager.updateProduct(2, updatedData);
 
-    // Borra el archivo
-    // await deleteFile(FILE_NAME);
+    // Borrar 1 producto basado en su ID
+    // productManager.deleteProduct(3);
+
+    console.log(productManager.getProducts());
+    console.log(productManager.getProductById(1));
+
+
 }
-
-main();
+init();

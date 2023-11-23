@@ -12,18 +12,21 @@ async function createFile(text, fileName) {
 async function readFile(fileName) {
     try {
         const result = await fs.promises.readFile(fileName ?? FILE_NAME);
-        const data = JSON.parse(result.toString());
-        console.log(data);
-        console.log(data.nombre);
+        return result.toString();
+        // const data = JSON.parse(result.toString());
+        // console.log(data);
+        // console.log(data.nombre);
     } catch (error) {
         console.log("Error while reading the file", error);
+        throw error;
     }
 }
 async function updateFile(text, fileName) {
     try {
-        await fs.promises.appendFile(fileName ?? FILE_NAME, text ?? "Hola mundo");
+        await fs.promises.appendFile(fileName ?? getDefaultFileName(), text ?? "Hola mundo");
     } catch (error) {
-        console.log("Error while updating the file", error);
+        console.error("Error while updating the file", error);
+        throw error;
     }
 }
 async function deleteFile(fileName) {
