@@ -35,6 +35,34 @@ class ProductManager {
     }
   }
 
+  updateProductById(id, { title, description, price, thumbnail, code, stock }) {
+    const productIndex = this.products.findIndex((product) => product.id === id);
+    if (productIndex !== -1) {
+      this.products[productIndex] = {
+        id,
+        title,
+        description,
+        price,
+        thumbnail,
+        code,
+        stock,
+      };
+    } else {
+      throw new Error("Product not found");
+    }
+  }
+
+
+  removeProductById(id) {
+    const index = this.products.findIndex((product) => product.id === id);
+    if (index !== -1) {
+      this.products.splice(index, 1);
+    } else {
+      throw new Error("Product not found");
+    }
+  }
+
+
   getProduct() {
     return this.products;
   }
