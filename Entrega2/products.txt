@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "Calculadora",
+    "description": "Calculadora básica.",
+    "price": 234.56,
+    "thumbnail": "Thumbnail2",
+    "code": "CALC",
+    "stock": 234
+  },
+  {
+    "id": 2,
+    "title": "Escuadra",
+    "description": "Escuadra de 30 cm.",
+    "price": 123.45,
+    "thumbnail": "Thumbnail1",
+    "code": "ESC",
+    "stock": 123
+  }
+]

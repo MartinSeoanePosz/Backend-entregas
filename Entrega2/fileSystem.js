@@ -1,5 +1,5 @@
 import fs from "fs";
-const FILE_NAME = "./exampleJSON.txt";
+const FILE_NAME = "./products.txt";
 
 async function createFile(text, filename) {
   try {
@@ -12,11 +12,12 @@ async function createFile(text, filename) {
 async function readFile(filename) {
   try {
     const result = await fs.promises.readFile(filename ?? FILE_NAME);
-    const data = await JSON.parse(result.toString());
+    const data = JSON.parse(result.toString());
     console.log(data);
-    console.log(data.nombre);
+    return data;
   } catch (error) {
     console.log("Error reading the file", error);
+    throw error; // Re-throw the error to handle it elsewhere if needed
   }
 }
 

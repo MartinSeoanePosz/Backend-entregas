@@ -1,82 +1,121 @@
-class ProductManager {
-  constructor() {
-    this.products = [];
-  }
-  static correlativeId = 0;
+import { createFile, readFile, updateFile, deleteFile } from "./fileSystem.js";
+import fs from "fs";
+const FILE_NAME = "./products.txt";
 
-  addProduct(title, description, price, thumbnail, code, stock) {
-    if (
-      title == undefined ||
-      description == undefined ||
-      price == undefined ||
-      thumbnail == undefined ||
-      code == undefined ||
-      stock == undefined
-    ) {
-      throw new Error("All fields are required");
-    }
-    let codeExists = this.products.find(product => product.code === code);
-    if (codeExists) {
-      throw new Error("Product code already exists");
-    } else {
-      ProductManager.correlativeId++;
-
-      const newProduct = {
-        id: ProductManager.correlativeId,
-        title,
-        description,
-        price,
-        thumbnail,
-        code,
-        stock,
-      };
-      this.products.push(newProduct);
-      return newProduct;
+export default class ProductManager {
+  async getProducts() {
+    try {
+      if (fs.existsSync(FILE_NAME)) {
+        const fileContent = await fs.promises.readFile(FILE_NAME, "utf-8");
+        if (fileContent.trim() === "") {
+          console.log(`File ${FILE_NAME} is empty.`);
+          return [];
+        }
+        return JSON.parse(fileContent);
+      } else {
+        console.log(`File ${FILE_NAME} does not exist.`);
+        return [];
+      }
+    } catch (error) {
+      console.error('Error reading or parsing the file:', error.message);
+      throw error;
     }
   }
-
-  updateProductById(id, { title, description, price, thumbnail, code, stock }) {
-    const productIndex = this.products.findIndex((product) => product.id === id);
-    if (productIndex !== -1) {
-      this.products[productIndex] = {
-        id,
-        title,
-        description,
-        price,
-        thumbnail,
-        code,
-        stock,
-      };
-    } else {
-      throw new Error("Product not found");
+  
+  async addProduct({ title, description, price, thumbnail, code, stock }) {
+    try {
+      let products = await this.getProducts();
+      if (
+        title === undefined ||
+        description === undefined ||
+        price === undefined ||
+        thumbnail === undefined ||
+        code === undefined ||
+        stock === undefined
+      ) {
+        throw new Error("All fields are required");
+      }
+      let existingProduct = products.find((product) => product.code === code);
+      if (existingProduct) {
+        console.log("Product with the same code already exists. Not adding a new product.");
+      } else {
+        const newProduct = {
+          id: products.length + 1,
+          title,
+          description,
+          price,
+          thumbnail,
+          code,
+          stock,
+        };
+        products.push(newProduct);
+        console.log("Product added successfully.");
+      }
+      await fs.promises.writeFile(FILE_NAME, JSON.stringify(products, null, 2), "utf-8");
+  
+    } catch (error) {
+      console.error('Error adding product:', error.message);
+      throw error;
+    }
+  } 
+  async getProductById(id) {
+    try {
+      const products = await this.getProducts();
+      const product = products.find((product) => product.id === id);
+      if (product) {
+        return product;
+      } else {
+        throw new Error("Product not found");
+      }
+    } catch (error) {
+      console.error('Error getting product by ID:', error.message);
+      throw error;
     }
   }
 
-
-  removeProductById(id) {
-    const index = this.products.findIndex((product) => product.id === id);
-    if (index !== -1) {
-      this.products.splice(index, 1);
-    } else {
-      throw new Error("Product not found");
+  async updateProductById(id, { title, description, price, thumbnail, code, stock }) {
+    try {
+      let products = await this.getProducts();
+      const productIndex = products.findIndex((product) => product.id === id);
+  
+      if (productIndex !== -1) {
+        const updatedProduct = {
+          id,
+          title: title || products[productIndex].title,
+          description: description || products[productIndex].description,
+          price: price || products[productIndex].price,
+          thumbnail: thumbnail || products[productIndex].thumbnail,
+          code: code || products[productIndex].code,
+          stock: stock || products[productIndex].stock,
+        };
+  
+        products[productIndex] = updatedProduct;
+        await fs.promises.writeFile(FILE_NAME, JSON.stringify(products), "utf-8");
+  
+        console.log(`Product with ID ${id} updated successfully.`);
+      } else {
+        throw new Error("Product not found");
+      }
+    } catch (error) {
+      console.error('Error updating product by ID:', error.message);
+      throw error;
     }
   }
 
-
-  getProduct() {
-    return this.products;
-  }
-
-  getProductById(id) {
-    let product = this.products.find(product => product.id === id);
-    if (product !== undefined) {
-      return product;
-    } else {
-      throw new Error("Product not found");
+  async removeProductById(id) {
+    try {
+      let products = await this.getProducts();
+      const index = products.findIndex((product) => product.id === id);
+  
+      if (index !== -1) {
+        products.splice(index, 1);
+        await fs.promises.writeFile(FILE_NAME, JSON.stringify(products), "utf-8");
+      } else {
+        throw new Error("Product not found");
+      }
+    } catch (error) {
+      console.error('Error removing product by ID:', error.message);
+      throw error;
+    }
   }
 }
-}
-
-
-export default ProductManager;
-
