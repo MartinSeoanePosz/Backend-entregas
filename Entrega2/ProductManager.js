@@ -76,26 +76,30 @@ export default class ProductManager {
   async updateProductById(id, { title, description, price, thumbnail, code, stock }) {
     try {
       let products = await this.getProducts();
+  
       const productIndex = products.findIndex((product) => product.id === id);
   
       if (productIndex !== -1) {
-        const updatedProduct = {
-          id,
-          title: title || products[productIndex].title,
-          description: description || products[productIndex].description,
-          price: price || products[productIndex].price,
-          thumbnail: thumbnail || products[productIndex].thumbnail,
-          code: code || products[productIndex].code,
-          stock: stock || products[productIndex].stock,
+        // Update the existing product
+        products[productIndex] = {
+          ...products[productIndex],
+          title,
+          description,
+          price,
+          thumbnail,
+          code,
+          stock,
         };
-  
-        products[productIndex] = updatedProduct;
-        await fs.promises.writeFile(FILE_NAME, JSON.stringify(products), "utf-8");
   
         console.log(`Product with ID ${id} updated successfully.`);
       } else {
+        console.log(`Product with ID ${id} not found.`);
         throw new Error("Product not found");
       }
+  
+      // Write the updated products array to the file
+      await fs.promises.writeFile(FILE_NAME, JSON.stringify(products, null, 2), "utf-8");
+  
     } catch (error) {
       console.error('Error updating product by ID:', error.message);
       throw error;

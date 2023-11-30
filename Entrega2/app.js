@@ -30,5 +30,19 @@ async function run() {
   const product = await productManager.getProductById(productId);
   console.log(`Product by Id:${productId}`, product);
 
+  // const productIdToUpdate = 2;
+  // const updatedProductInfo = {
+  //   title: "Updated Title",
+  //   description: "Updated Description",
+  //   price: 993.99,
+  //   thumbnail: "Updated Thumbnail",
+  //   code: "UPDATED",
+  //   stock: 500,
+  // };
+
+  // await productManager.updateProductById(productIdToUpdate, updatedProductInfo);
+
+  // const updatedProducts = await productManager.getProducts();
+  // console.log("Products:", updatedProducts);
 }
 run();
