@@ -10,11 +10,11 @@
   },
   {
     "id": 2,
-    "title": "Updated Title",
-    "description": "Updated Description",
-    "price": 993.99,
-    "thumbnail": "Updated Thumbnail",
-    "code": "UPDATED",
-    "stock": 500
+    "title": "Escuadra",
+    "description": "Escuadra de 30 cm.",
+    "price": 123.45,
+    "thumbnail": "Thumbnail1",
+    "code": "ESC",
+    "stock": 123
   }
 ]

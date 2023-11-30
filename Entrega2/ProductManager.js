@@ -102,16 +102,18 @@ export default class ProductManager {
   async removeProductById(id) {
     try {
       let products = await this.getProducts();
-      const index = products.findIndex((product) => product.id === id);
   
-      if (index !== -1) {
-        products.splice(index, 1);
-        await fs.promises.writeFile(FILE_NAME, JSON.stringify(products), "utf-8");
+      const productIndex = products.findIndex((product) => product.id === id);
+      if (productIndex !== -1) {
+        products.splice(productIndex, 1);
+        console.log(`Product with ID ${id} removed successfully.`);
       } else {
+        console.log(`Product with ID ${id} not found.`);
         throw new Error("Product not found");
       }
+      await fs.promises.writeFile(FILE_NAME, JSON.stringify(products, null, 2), "utf-8");
     } catch (error) {
-      console.error('Error removing product by ID:', error.message);
+      console.error('Error deleting product by ID:', error.message);
       throw error;
     }
   }

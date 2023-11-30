@@ -44,5 +44,9 @@ async function run() {
 
   // const updatedProducts = await productManager.getProducts();
   // console.log("Products:", updatedProducts);
+
+  // const productIdToRemove = 2;
+  // await productManager.removeProductById(productIdToRemove);
+
 }
 run();
