@@ -76,11 +76,8 @@ export default class ProductManager {
   async updateProductById(id, { title, description, price, thumbnail, code, stock }) {
     try {
       let products = await this.getProducts();
-  
       const productIndex = products.findIndex((product) => product.id === id);
-  
       if (productIndex !== -1) {
-        // Update the existing product
         products[productIndex] = {
           ...products[productIndex],
           title,
@@ -90,16 +87,12 @@ export default class ProductManager {
           code,
           stock,
         };
-  
         console.log(`Product with ID ${id} updated successfully.`);
       } else {
         console.log(`Product with ID ${id} not found.`);
         throw new Error("Product not found");
       }
-  
-      // Write the updated products array to the file
       await fs.promises.writeFile(FILE_NAME, JSON.stringify(products, null, 2), "utf-8");
-  
     } catch (error) {
       console.error('Error updating product by ID:', error.message);
       throw error;
