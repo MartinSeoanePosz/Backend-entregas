@@ -1,15 +1,1 @@
-[
-  {
-    "cartId": 1,
-    "products": [
-      {
-        "product": "1",
-        "quantity": 3
-      },
-      {
-        "product": "2",
-        "quantity": 2
-      }
-    ]
-  }
-]
+[{"id":"1702300275428","products":[{"id":1,"quantity":4},{"id":2,"quantity":2},{"id":3,"quantity":1}]}]

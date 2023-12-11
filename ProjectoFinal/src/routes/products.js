@@ -1,122 +1,62 @@
-import { Router } from "express";
-import { readData, writeData } from "../fileUtils.js";
+import express from 'express';
+import { ProductManager } from '../ProductManager.js';
 
-const router = Router();
-const PRODUCTS_FILE = "./src/data/products.json";
+const router = express.Router();
+const productManager = new ProductManager('../src/data/products.json');
 
-router.get("/", async (req, res) => {
-    try {
-        const productData = await readData(PRODUCTS_FILE);
-        res.json({ message: productData.length === 0 ? "No products" : "Products list", data: productData });
-    } catch (error) {
-        res.status(500).json({ error: "Internal server error" });
-    }
+router.get('/', async (req, res) => {
+  try {
+    const products = await productManager.getProducts();
+    res.json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
-router.get("/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const productData = await readData(PRODUCTS_FILE);
-
-        const product = productData.find((product) => product.id === parseInt(id));
-
-        if (!product) {
-            return res.status(404).json({ message: "Product not found" });
-        }
-
-        res.json({ data: product });
-    } catch (error) {
-        res.status(500).json({ error: "Internal server error" });
-    }
+router.get('/:pid', async (req, res) => {
+  try {
+    const productId = parseInt(req.params.pid);
+    const product = await productManager.getProductById(productId);
+    res.json(product);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 router.post('/', async (req, res) => {
-    try {
-        const { title, description, price, thumbnail, code, category, stock } = req.body;
-
-        if (!title || !description || !price || !thumbnail || !code || !category || !stock) {
-            return res.status(400).json({ error: "Missing information." });
-        }
-        const productData = await readData(PRODUCTS_FILE);
-
-        if (productData.find((product) => product.code === code)) {
-            console.log("Product with the same code already exists. Not adding a new product.");
-            return res.status(400).json({ error: "Product with the same code already exists." });
-        }
-        const maxId = Math.max(...productData.map(product => product.id), 0);
-
-        const newProduct = {
-            id: maxId + 1, 
-            title,
-            description,
-            price,
-            thumbnail,
-            code,
-            category,
-            stock
-        };
-        productData.push(newProduct);
-        currentId = newProduct.id + 1;
-
-        await writeData(PRODUCTS_FILE, productData);
-
-        res.status(201).json({ message: "Product created", data: newProduct });
-    } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
+  try {
+    const { title, description, price, thumbnail, code, category, stock } = req.body;
+    await productManager.addProduct(title, description, price, thumbnail, code, category, stock);
+    res.json({ message: 'Product added successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: error.message });
+  }
 });
 
-router.put("/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { title, description, price, thumbnail, code, category, stock } = req.body;
-        const productData = await readData(PRODUCTS_FILE);
-        const indexProduct = productData.findIndex((product) => product.id === parseInt(id));
-
-        if (indexProduct !== -1) {
-            const updatedProduct = {
-                id: parseInt(id),
-                title,
-                description,
-                price,
-                thumbnail,
-                code,
-                category,
-                stock,
-            };
-            productData.splice(indexProduct, 1, updatedProduct);
-
-            await writeData(PRODUCTS_FILE, productData);
-
-            res.json({ message: "Product updated", data: updatedProduct });
-        } else {
-            res.status(404).json({ message: "Product not found" });
-        }
-    } catch (error) {
-        res.status(500).json({ error: "Internal server error" });
-    }
+router.put('/:pid', async (req, res) => {
+  try {
+    const productId = parseInt(req.params.pid);
+    const data = req.body;
+    const result = await productManager.updateProductById(productId, data);
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: error.message });
+  }
 });
 
-router.delete("/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const productData = await readData(PRODUCTS_FILE);
-        const indexProduct = productData.findIndex((product) => product.id === parseInt(id));
-
-        if (indexProduct !== -1) {
-            const deletedProduct = productData[indexProduct];
-            productData.splice(indexProduct, 1);
-
-            await writeData(PRODUCTS_FILE, productData);
-
-            res.json({ message: "Product deleted", data: deletedProduct });
-        } else {
-            res.status(404).json({ message: "Product not found" });
-        }
-    } catch (error) {
-        res.status(500).json({ error: "Internal server error" });
-    }
+router.delete('/:pid', async (req, res) => {
+  try {
+    const productId = parseInt(req.params.pid);
+    const result = await productManager.deleteProductById(productId);
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: error.message });
+  }
 });
 
 export default router;
