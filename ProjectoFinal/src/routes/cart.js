@@ -5,7 +5,6 @@ import utils from '../fileUtils.js';
 const router = express.Router();
 const cartManager = new CartManager('../src/data/carts.json'); 
 
-// POST /api/carts
 router.post('/', async (req, res) => {
   try {
     const cartId = await cartManager.createCart();
@@ -18,7 +17,7 @@ router.post('/', async (req, res) => {
 
 router.get('/:cid', async (req, res) => {
   try {
-    const cartId = req.params.cid;
+    const cartId = parseInt(req.params.cid);
     const cart = await cartManager.getCartById(cartId);
     res.json(cart);
   } catch (error) {
@@ -29,7 +28,7 @@ router.get('/:cid', async (req, res) => {
 
 router.post('/:cid/product/:pid', async (req, res) => {
   try {
-    const cartId = req.params.cid;
+    const cartId = parseInt(req.params.cid);
     const productId = parseInt(req.params.pid);
     const quantity = req.body.quantity || 1; 
     const result = await cartManager.addProductToCart(cartId, productId, quantity);

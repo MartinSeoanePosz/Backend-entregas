@@ -35,16 +35,16 @@ export class CartManager {
       let data = await fileUtils.readFile(this.path);
       this.carts = data?.length > 0 ? data : [];
       const cart = this.carts.find((c) => c.id === cartId);
-
+  
       if (cart !== undefined) {
         return cart;
       } else {
-        return "Requested cart doesn't exist";
+        return { message: "Requested cart doesn't exist" };  
       }
     } catch (error) {
       console.error(error);
     }
-  }
+  }  
 
   async addProductToCart(cartId, productId, quantity) {
     try {
@@ -74,6 +74,6 @@ export class CartManager {
   }
 
   generateCartId() {
-    return Date.now().toString();
+    return Date.now();
   }
 }
