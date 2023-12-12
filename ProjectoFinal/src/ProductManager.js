@@ -5,7 +5,7 @@ export class ProductManager {
     this.path = path;
     this.products = [];
   }
-  async addProduct(title, description, price, thumbnail, code, category, stock) {
+  async addProduct(title, description, price, thumbnail, code, category, status, stock) {
 
     if (
       title == undefined ||
@@ -14,6 +14,7 @@ export class ProductManager {
       thumbnail == undefined ||
       code == undefined ||
       category == undefined ||
+      status == undefined ||
       stock == undefined
     ) {
       throw new Error("All fields are required");
@@ -39,6 +40,7 @@ export class ProductManager {
         thumbnail,
         code,
         category,
+        status,
         stock,
       };
       this.products.push(newProduct);
