@@ -104,19 +104,24 @@ export class ProductManager {
   async deleteProductById(id) {
     try {
       console.log("Deleting product with ID:", id);
+      console.log("Products before deletion:", this.products);
+      console.log("Products from file before reading:", this.products);
       let products = await utils.readFile(this.path);
+      console.log("Products from file after reading:", products);
       this.products = products?.length > 0 ? products : [];
       let productIndex = this.products.findIndex((product) => product.id === id);
       if (productIndex !== -1) {
         let product = this.products[productIndex];
         this.products.splice(productIndex, 1);
         await utils.writeFile(this.path, products);
-        return { mensaje: "Product deleted", producto: product };
+        return { message: "Product deleted", product: product };
       } else {
-        return { mensaje: "Requested product doesn't exists" };
+        return { message: "Requested product doesn't exists" };
       }
     } catch (error) {
       console.log(error);
     }
   }
+
+  
 }

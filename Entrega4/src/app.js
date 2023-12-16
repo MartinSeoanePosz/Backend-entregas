@@ -59,16 +59,21 @@ socketServer.on("connection", (socket) => {
     }
   });
 
-  socket.on("deleteProduct", async (id) => {
+  socket.on("deleteProductById", async (id, callback) => {
     console.log("Server received deleteProduct request for ID:", id);
     try {
-      const result = await productManager.deleteProductById(id);
-      console.log("Deletion result:", result);
-      const allProducts = await productManager.getProducts();
-      console.log("All products after deletion:", allProducts);
-      result && socketServer.emit("updateProducts", allProducts);
+      await productManager.deleteProductById(id);
+      const allProducts = await productManager.getProducts(); // Read products after deletion
+      callback({ mensaje: "Product deleted" });
+      socketServer.emit("updateProducts", allProducts);
     } catch (err) {
       console.log("Error during deletion:", err);
+      callback({ mensaje: "Error deleting product" });
     }
   });
+  socket.on("updateProducts", (products) => {
+    console.log("Received updateProducts event:", products);
+    updateProductList(products);
+  });
+  
 });
