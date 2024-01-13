@@ -78,7 +78,7 @@ socketServer.on("connection", (socket) => {
   });
   socket.on("updateProducts", (products) => {
     console.log("Received updateProducts event:", products);
-    getAll(products);
+    getAll();
   });
   
 });

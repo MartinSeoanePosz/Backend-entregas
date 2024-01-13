@@ -1,17 +1,17 @@
 const socket = io();
 console.log("hola mundo");
 
-const addProductBtn = document.getById("addProductBtn");
-const deleteProductBtn = document.delete("deleteProductBtn");
+const addProductBtn = document.getElementById("addProductBtn");
+const deleteProductBtn = document.getElementById("deleteProductBtn");
 
 addProductBtn.addEventListener("click", () => {
-  const title = document.getById("title").value;
-  const description = document.getById("description").value;
-  const price = document.getById("price").value;
-  const thumbnail = document.getById("thumbnail").value;
-  const code = document.getById("code").value;
-  const category = document.getById("category").value;
-  const stock = document.getById("stock").value;
+  const title = document.getElementById("title").value;
+  const description = document.getElementById("description").value;
+  const price = document.getElementById("price").value;
+  const thumbnail = document.getElementById("thumbnail").value;
+  const code = document.getElementById("code").value;
+  const category = document.getElementById("category").value;
+  const stock = document.getElementById("stock").value;
   console.log(title, description, price, thumbnail, code, category, stock);
   const product = {
     title,
@@ -45,10 +45,10 @@ deleteProductBtn.addEventListener("click", () => {
       alert("Error al eliminar el producto");
     }
   });
-  document.getById("productId").value = "";
+  document.getElementById("productId").value = "";
 });
 
-function getAll(products) {
+function updateProductList(products) {
   productListContainer.innerHTML = "";
 
   if (products && products.length > 0) {
