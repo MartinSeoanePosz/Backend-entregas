@@ -1,17 +1,17 @@
 const socket = io();
 console.log("hola mundo");
 
-const addProductBtn = document.getElementById("addProductBtn");
-const deleteProductBtn = document.getElementById("deleteProductBtn");
+const addProductBtn = document.getById("addProductBtn");
+const deleteProductBtn = document.delete("deleteProductBtn");
 
 addProductBtn.addEventListener("click", () => {
-  const title = document.getElementById("title").value;
-  const description = document.getElementById("description").value;
-  const price = document.getElementById("price").value;
-  const thumbnail = document.getElementById("thumbnail").value;
-  const code = document.getElementById("code").value;
-  const category = document.getElementById("category").value;
-  const stock = document.getElementById("stock").value;
+  const title = document.getById("title").value;
+  const description = document.getById("description").value;
+  const price = document.getById("price").value;
+  const thumbnail = document.getById("thumbnail").value;
+  const code = document.getById("code").value;
+  const category = document.getById("category").value;
+  const stock = document.getById("stock").value;
   console.log(title, description, price, thumbnail, code, category, stock);
   const product = {
     title,
@@ -34,7 +34,7 @@ addProductBtn.addEventListener("click", () => {
 });
 
 deleteProductBtn.addEventListener("click", () => {
-  const id = document.getElementById("productId").value;
+  const id = document.getById("productId").value;
   console.log("Deleting product with ID:", id);
   socket.emit("deleteProductById", id, (result) => {
     console.log("Result from deleteProductById:", result);
@@ -45,10 +45,10 @@ deleteProductBtn.addEventListener("click", () => {
       alert("Error al eliminar el producto");
     }
   });
-  document.getElementById("productId").value = "";
+  document.getById("productId").value = "";
 });
 
-function updateProductList(products) {
+function getAll(products) {
   productListContainer.innerHTML = "";
 
   if (products && products.length > 0) {

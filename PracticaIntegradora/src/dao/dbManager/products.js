@@ -1,4 +1,4 @@
-import { productModel } from "../mongo/products";
+import { productModel } from "../mongo/products.js";
 
 export default class ProductDBManager {
     constructor() {

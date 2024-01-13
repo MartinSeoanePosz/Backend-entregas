@@ -1,4 +1,4 @@
-import fileUtils from "../fileUtils.js";
+// import fileUtils from "../fileUtils.js";
 
 export class CartManager {
   constructor(path) {

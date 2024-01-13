@@ -1,4 +1,4 @@
-import utils from "../fileUtils.js";
+// import utils from "../fileUtils.js";
 
 export class ProductManager {
   constructor(path) {

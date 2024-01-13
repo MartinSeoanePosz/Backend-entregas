@@ -7,13 +7,14 @@ import handlebars from "express-handlebars";
 import productRouter from './routes/productRouter.js';
 import cartRouter from './routes/cartRouter.js';
 import viewsRouter from "./routes/viewsRouter.js";
-import { ProductManager } from "./classes/ProductManager.js";
+// import { ProductManager } from "./classes/ProductManager.js";
+import ProductDBManager from './dao/dbManager/products.js';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8090;
-const productManager = new ProductManager("products.json");
+const productManager = new ProductDBManager();
 const DB_URL = process.env.DB_URL || "mongodb://localhost:27017/ecommerce";
 
 app.use(express.json());
@@ -46,7 +47,7 @@ socketServer.on("connection", (socket) => {
     const category = product.category;
     const stock = product.stock;
     try {
-      const result = await productManager.addProduct(
+      const result = await productManager.save(
         title,
         description,
         price,
@@ -55,19 +56,19 @@ socketServer.on("connection", (socket) => {
         category,
         stock
       );
-      const allProducts = await productManager.getProducts();
+      const allProducts = await productManager.getAll();
       console.log(allProducts);
-      result && socketServer.emit("updateProducts", allProducts);
+      result && socketServer.emit("update", allProducts);
     } catch (err) {
       console.log(err);
     }
   });
 
-  socket.on("deleteProductById", async (id, callback) => {
-    console.log("Server received deleteProduct request for ID:", id);
+  socket.on("delete", async (id, callback) => {
+    console.log("Server received delete request for ID:", id);
     try {
-      await productManager.deleteProductById(id);
-      const allProducts = await productManager.getProducts(); // Read products after deletion
+      await productManager.delete(id);
+      const allProducts = await productManager.getAll(); // Read products after deletion
       callback({ mensaje: "Product deleted" });
       socketServer.emit("updateProducts", allProducts);
     } catch (err) {
@@ -77,7 +78,7 @@ socketServer.on("connection", (socket) => {
   });
   socket.on("updateProducts", (products) => {
     console.log("Received updateProducts event:", products);
-    updateProductList(products);
+    getAll(products);
   });
   
 });
