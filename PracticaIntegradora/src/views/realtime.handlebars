@@ -44,7 +44,11 @@
   {{#each products}}
     <div class="productCard">
       <div class="cardProduct__image">
-        <img src="{{this.thumbnail}}" alt="{{this.title}}" />
+        {{#if this.thumbnail}}
+          <img src="{{this.thumbnail}}" alt="{{this.title}}" />
+        {{else}}
+          <img src="default-thumbnail.jpg" alt="No Thumbnail" />
+        {{/if}}
       </div>
       <div class="cardProduct__info">
 
@@ -55,7 +59,6 @@
         <p>{{this.code}}</p>
         <p>{{this.id}}</p>
       </div>
-
     </div>
   {{/each}}
 </div>

@@ -1,5 +1,4 @@
 const socket = io();
-console.log("hola mundo");
 
 const addProductBtn = document.getElementById("addProductBtn");
 const deleteProductBtn = document.getElementById("deleteProductBtn");

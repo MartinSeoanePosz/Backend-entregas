@@ -83,6 +83,30 @@ socketServer.on("connection", (socket) => {
   
 });
 
+
+// chat
+
+let visitas = 0;
+let messages = [];
+socketServer.on("connection", (socket) => {
+  socket.on("new-user", (data) => {
+    console.log("nuevo cliente conectado", data.user);
+
+    socket.user = data.user;
+    socket.id = data.id;
+    visitas++;
+    socket.broadcast.emit("new-user-connected", {
+      message: `Se ha conectado un nuevo usuario: ${visitas}`,
+      user: data.user,
+    });
+  });
+
+  socket.on("message", (data) => {
+    messages.push({ ...data, id: socket.id, date: new Date().toISOString() });
+    socketServer.emit("messageLogs", messages);
+  });
+});
+
 mongoose.connect(DB_URL).then(() => {
   console.log("Base de datos conectada");
 }) .catch((err) => {
