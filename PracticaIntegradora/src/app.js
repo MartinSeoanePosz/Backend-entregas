@@ -90,13 +90,13 @@ let visitas = 0;
 let messages = [];
 socketServer.on("connection", (socket) => {
   socket.on("new-user", (data) => {
-    console.log("nuevo cliente conectado", data.user);
+    console.log("new client connected", data.user);
 
     socket.user = data.user;
     socket.id = data.id;
     visitas++;
     socket.broadcast.emit("new-user-connected", {
-      message: `Se ha conectado un nuevo usuario: ${visitas}`,
+      message: `New user connected: ${visitas}`,
       user: data.user,
     });
   });
@@ -106,9 +106,9 @@ socketServer.on("connection", (socket) => {
     socketServer.emit("messageLogs", messages);
   });
 });
-
+mongoose.set('strictQuery', true);
 mongoose.connect(DB_URL).then(() => {
-  console.log("Base de datos conectada");
+  console.log("Database connected");
 }) .catch((err) => {
   console.log("Error: ", err);
 });

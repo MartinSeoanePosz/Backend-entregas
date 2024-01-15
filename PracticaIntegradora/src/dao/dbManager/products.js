@@ -7,7 +7,7 @@ export default class ProductDBManager {
 
     async getAll() {
         try {
-            const products = await this.productModel.find();
+            const products = await this.productModel.find().lean();
             return products;
         } catch (error) {
             console.log(error);
@@ -16,7 +16,7 @@ export default class ProductDBManager {
     async getById(id) {
         try {
             if (id) {
-                const product = await this.productModel.findById(id);
+                const product = await this.productModel.findById(id).lean();
                 return product;
             } else {
                 const products = await this.productModel.find();

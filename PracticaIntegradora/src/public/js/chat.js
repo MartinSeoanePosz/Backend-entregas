@@ -2,14 +2,15 @@ const socket = io();
 let user = "";
 
 Swal.fire({
-  title: "Inicia sesion",
-  text: "Ingresa tu email",
+  title: "Log in",
+  text: "Input your email",
   input: "email",
-  confirmButtonText: "Consultanos!",
+  confirmButtonText: "Ask us!",
   allowOutsideClick: false,
+  allowEscapeKey : false,
   inputValidator: (value) => {
     if (!value) {
-      return "Debe ingresar email";
+      return "Must input an email";
     }
   },
 }).then((result) => {
@@ -23,7 +24,7 @@ Swal.fire({
 socket.on("new-user-connected", (data) => {
   if (data.id !== socket.id)
     Swal.fire({
-      text: `${data.user} se ha conectado al chat`,
+      text: `${data.user} Has connected`,
       toast: true,
       position: "top-end",
     });
@@ -89,4 +90,4 @@ function firstLoad() {
     });
 }
 
-firstLoad();
+// firstLoad();
