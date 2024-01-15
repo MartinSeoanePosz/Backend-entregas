@@ -2,7 +2,6 @@ import express from 'express';
 // import { ProductManager } from '../classes/ProductManager.js';
 // import { CartManager } from '../classes/CartManager.js';
 import ProductDBManager from '../dao/dbManager/products.js';
-import CartDBManager from '../dao/dbManager/carts.js';
 
 
 const router = express.Router();
@@ -10,7 +9,8 @@ const router = express.Router();
 const productManager = new ProductDBManager();
 
 router.get("/products", async (req, res) => {
-    const products = await productManager.getAll();
+    const products = new ProductDBManager();
+    await productManager.getAll();
     res.render("products", {
       title: "Listado de productos",
       products: products,
