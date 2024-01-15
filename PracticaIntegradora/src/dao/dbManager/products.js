@@ -27,15 +27,6 @@ export default class ProductDBManager {
         }
     }
 
-    async add(data) {
-        try {
-            const newProduct = new this.productModel(data);
-            const product = await newProduct.save();
-            return product;
-        } catch (error) {
-            console.log(error);
-        }
-    }
     async save(data) {
         try {
             const newProduct = new this.productModel(data);

@@ -9,12 +9,14 @@ import cartRouter from './routes/cartRouter.js';
 import viewsRouter from "./routes/viewsRouter.js";
 // import { ProductManager } from "./classes/ProductManager.js";
 import ProductDBManager from './dao/dbManager/products.js';
+import MessageDBManager from './dao/dbManager/messages.js';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8090;
 const productManager = new ProductDBManager();
+const messageManager = new MessageDBManager();
 const DB_URL = process.env.DB_URL || "mongodb://localhost:27017/ecommerce";
 
 app.use(express.json());
@@ -89,6 +91,7 @@ let visitas = 0;
 let messages = [];
 socketServer.on("connection", (socket) => {
   socket.on("new-user", (data) => {
+      console.log("Received data from new user:", data);
     console.log("new client connected", data.user);
 
     socket.user = data.user;
@@ -100,9 +103,21 @@ socketServer.on("connection", (socket) => {
     });
   });
 
-  socket.on("message", (data) => {
-    messages.push({ ...data, id: socket.id, date: new Date().toISOString() });
-    socketServer.emit("messageLogs", messages);
+  // socket.on("message", (data) => {
+  //   messages.push({ ...data, id: socket.id, date: new Date().toISOString() });
+  //   socketServer.emit("messageLogs", messages);
+  // });
+  socket.on("message", async (data) => {
+    try {
+      const savedMessage = await messageManager.save({
+        user: data.user,
+        message: data.message,
+        date: new Date().toISOString(),
+      });
+      socketServer.emit("messageLogs", [savedMessage]);
+    } catch (error) {
+      console.error("Error saving message:", error);
+    }
   });
 });
 

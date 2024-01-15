@@ -1,25 +1,27 @@
 const socket = io();
 let user = "";
+const getUserInput = async () => {
+  const result = await Swal.fire({
+    title: "Log in",
+    text: "Input your email",
+    input: "email",
+    confirmButtonText: "Ask us!",
+    allowOutsideClick: false,
+    allowEscapeKey : false,
+    inputValidator: (value) => {
+      if (!value) {
+        return "Must input an email";
+      }
+    },
+  }).then((result) => {
+    console.log("User input:", result.value);
+    if (result.value) {
+      user = result.value;
 
-Swal.fire({
-  title: "Log in",
-  text: "Input your email",
-  input: "email",
-  confirmButtonText: "Ask us!",
-  allowOutsideClick: false,
-  allowEscapeKey : false,
-  inputValidator: (value) => {
-    if (!value) {
-      return "Must input an email";
+      socket.emit("new-user", { user: user, id: socket.id });
     }
-  },
-}).then((result) => {
-  if (result.value) {
-    user = result.value;
-
-    socket.emit("new-user", { user: user, id: socket.id });
-  }
-});
+  });
+};
 
 socket.on("new-user-connected", (data) => {
   if (data.id !== socket.id)
@@ -89,5 +91,5 @@ function firstLoad() {
       log.innerHTML = message;
     });
 }
-
+getUserInput();
 // firstLoad();
