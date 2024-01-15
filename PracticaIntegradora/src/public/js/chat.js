@@ -1,27 +1,27 @@
 const socket = io();
+if (window.location.pathname === '/chat' || '/chat/' ) {
 let user = "";
-const getUserInput = async () => {
-  const result = await Swal.fire({
-    title: "Log in",
-    text: "Input your email",
-    input: "email",
-    confirmButtonText: "Ask us!",
-    allowOutsideClick: false,
-    allowEscapeKey : false,
-    inputValidator: (value) => {
-      if (!value) {
-        return "Must input an email";
-      }
-    },
-  }).then((result) => {
-    console.log("User input:", result.value);
-    if (result.value) {
-      user = result.value;
 
-      socket.emit("new-user", { user: user, id: socket.id });
+Swal.fire({
+  title: "Log in",
+  text: "Input your email",
+  input: "email",
+  confirmButtonText: "Ask us!",
+  allowOutsideClick: false,
+  allowEscapeKey : false,
+  inputValidator: (value) => {
+    if (!value) {
+      return "Must input an email";
     }
-  });
-};
+  },
+}).then((result) => {
+  console.log("User input:", result.value);
+  if (result.value) {
+    user = result.value;
+
+    socket.emit("new-user", { user: user, id: socket.id });
+  }
+});
 
 socket.on("new-user-connected", (data) => {
   if (data.id !== socket.id)
@@ -31,7 +31,6 @@ socket.on("new-user-connected", (data) => {
       position: "top-end",
     });
 });
-
 let chatBox = document.getElementById("chatBox");
 
 chatBox.addEventListener("keyup", (e) => {
@@ -48,48 +47,46 @@ chatBox.addEventListener("keyup", (e) => {
 socket.on("messageLogs", (data) => {
   let log = document.getElementById("messageLogs");
   let message = "";
-
   data.forEach((elem) => {
     message += `
-        <div class="chat-message">
-        <div class="message-bubble">
-          <div class="message-sender" >${elem.user}</div>
-          <span style="font-size: 8px">${elem.date}</span>
-
-          <p>${elem.message}</p>
+    <div class="chat-message">
+    <div class="message-bubble">
+    <div class="message-sender">${elem.user}</div>
+    <span style="font-size: 8px">${elem.date}</span>
+    <p>${elem.message}</p>
           </div>
-  
-        </div>
-      `;
-  });
-
-  log.innerHTML = message;
-});
-
-function firstLoad() {
-  fetch("/messages")
-    .then((res) => res.json())
-    .then((data) => {
-      let log = document.getElementById("messageLogs");
-      let message = "";
-
+          </div>
+          `;
+        });
+        
+        log.innerHTML += message;
+      });
+      
+      function firstLoad() {
+        fetch("/messages")
+        .then((res) => res.json())
+        .then((data) => {
+          let log = document.getElementById("messageLogs");
+          let message = "";
+          
       data.forEach((elem) => {
         message += `
-           
-              <div class="chat-message">
-              <div class="message-bubble">
         
-                <div class="message-sender" >${elem.user}</div>
-                <span>${elem.date}</span>
-                <p>${elem.message}</p>
-                </div>
+        <div class="chat-message">
+        <div class="message-bubble">
         
-              </div>
-            `;
+        <div class="message-sender" >${elem.user}</div>
+        <span>${elem.date}</span>
+        <p>${elem.message}</p>
+        </div>
+        
+        </div>
+        `;
       });
-
+      
       log.innerHTML = message;
     });
+  }
+  
+  // firstLoad();
 }
-getUserInput();
-// firstLoad();

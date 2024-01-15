@@ -10,7 +10,8 @@ export default class MessageDBManager {
             const messages = await this.messagesModel.find().lean();
             return messages;
         } catch (error) {
-            console.log(error);
+            console.log("Error fetching messages from the database:", error);
+            throw error;
         }
     }
     async save(data) {

@@ -2,7 +2,7 @@ const socket = io();
 
 const addProductBtn = document.getElementById("addProductBtn");
 const deleteProductBtn = document.getElementById("deleteProductBtn");
-
+if (window.location.pathname === '/realtime' || '/realtime/') {
 addProductBtn.addEventListener("click", () => {
   const title = document.getElementById("title").value;
   const description = document.getElementById("description").value;
@@ -46,7 +46,7 @@ deleteProductBtn.addEventListener("click", () => {
   });
   document.getElementById("productId").value = "";
 });
-
+}
 function updateProductList(products) {
   productListContainer.innerHTML = "";
 
