@@ -3,13 +3,13 @@ let user = "";
 
 Swal.fire({
   title: "Inicia sesion",
-  text: "Ingresa tu nombre de usuario",
-  input: "text",
+  text: "Ingresa tu email",
+  input: "email",
   confirmButtonText: "Consultanos!",
   allowOutsideClick: false,
   inputValidator: (value) => {
     if (!value) {
-      return "Debe ingresar un nombre de usuario";
+      return "Debe ingresar email";
     }
   },
 }).then((result) => {
