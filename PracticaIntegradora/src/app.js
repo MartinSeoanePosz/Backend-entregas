@@ -68,7 +68,7 @@ socketServer.on("connection", (socket) => {
     console.log("Server received delete request for ID:", id);
     try {
       await productManager.delete(id);
-      const allProducts = await productManager.getAll(); // Read products after deletion
+      const allProducts = await productManager.getAll(); 
       callback({ mensaje: "Product deleted" });
       socketServer.emit("updateProducts", allProducts);
     } catch (err) {
@@ -82,7 +82,6 @@ socketServer.on("connection", (socket) => {
   });
   
 });
-
 
 // chat
 
@@ -106,6 +105,7 @@ socketServer.on("connection", (socket) => {
     socketServer.emit("messageLogs", messages);
   });
 });
+
 mongoose.set('strictQuery', true);
 mongoose.connect(DB_URL).then(() => {
   console.log("Database connected");
