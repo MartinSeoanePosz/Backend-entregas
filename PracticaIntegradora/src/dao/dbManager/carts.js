@@ -63,4 +63,30 @@ export default class CartDBManager {
             console.log(error);
         }
     }
+    async addProductToCart(cartId, productId) {
+        try {
+            
+            const cart = await this.cartModel.findById(cartId);
+            if (!cart) {
+                console.log("Cart not found");
+                return null; 
+        }
+        const existingProductIndex = cart.products.findIndex(product => product.productId === productId);
+        
+        if (existingProductIndex !== -1) {
+            cart.products[existingProductIndex].quantity += 1;
+        } else {
+            cart.products.push({
+                productId: productId,
+                quantity: 1,
+            });
+        }
+        cart.markModified('products');
+        const updatedCart = await cart.save();
+        return updatedCart;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+    }
 }
