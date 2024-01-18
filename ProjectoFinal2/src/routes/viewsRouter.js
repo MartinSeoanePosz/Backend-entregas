@@ -11,24 +11,57 @@ const cartManager = new CartDBManager();
 
 // View all products
 router.get("/products", async (req, res) => {
-  const { page = 1 } = req.query;
-    const result = await productManager.paginate(
-      {},
-      { limit: 9, page, lean: true }
-    );
-    const { docs, hasPrevPage, hasNextPage, totalPages, prevPage, nextPage } =
-      result;
+  const { page = 1, limit = 9, sortBy = 'price', sortOrder = 'asc', category } = req.query;
+  try {
+      const result = await productManager.getProducts({
+          category,
+          page,
+          limit,
+          sortBy,
+          sortOrder,
+      });
+      const { docs, hasPrevPage, hasNextPage, totalPages, prevPage, nextPage } = result;
       const products = docs;
-    res.render("products", {
-      title: "Listado de productos",
-      products: products,
-      style: "../css/products.css",
-      hasPrevPage,
-      hasNextPage,
-      nextPage,
-      prevPage,
+      const response = {
+        status: 'success',
+        payload: products,
+        totalPages,
+        hasPrevPage,
+        hasNextPage,
+        nextPage,
+        prevPage,
+        limit: parseInt(limit),
+        page: parseInt(page),
+        selectedCategory: category,
+        sortBy,
+        sortOrder,
+      };
+  
+      console.log('API Response:', response);
+
+      res.render("products", {
+          title: "Product list",
+          products,
+          style: "../css/products.css",
+          hasPrevPage,
+          hasNextPage,
+          nextPage,
+          prevPage,
+          limit: parseInt(limit),
+          page: parseInt(page),
+          selectedCategory: category,
+          sortBy,
+          sortOrder,
+      });
+  } catch (error) {
+    console.log('API Error:', error);
+    res.status(500).json({
+      status: 'error',
+      payload: null,
+      message: 'Internal Server Error',
     });
-});
+  }
+  });
 
 // View and add/delete/update products
 router.get("/realtime", async (req, res) => {

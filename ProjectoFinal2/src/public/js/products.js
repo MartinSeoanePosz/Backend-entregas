@@ -63,8 +63,35 @@ function updateProductList(products) {
 
 
 if (window.location.pathname.includes("/products")){
-  
 
+  function changeLimit(newLimit) {
+    window.location.href = `/products?page={{page}}&limit=${newLimit}&sortBy={{sortBy}}&sortOrder={{sortOrder}}&category={{category}}`;
+  }
+  
+  function changeSortBy(newSortBy) {
+    window.location.href = `/products?page={{page}}&limit={{limit}}&sortBy=${newSortBy}&sortOrder={{sortOrder}}&category={{category}}`;
+  }
+  
+  function changeSortOrder(newSortOrder) {
+    window.location.href = `/products?page={{page}}&limit={{limit}}&sortBy={{sortBy}}&sortOrder=${newSortOrder}&category={{category}}`;
+  }
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    const categoryButtons = document.querySelectorAll('.category-button');
+  
+    categoryButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const selectedCategory = button.getAttribute('data-category');
+        updateURLWithCategory(selectedCategory);
+      });
+    });
+  
+    function updateURLWithCategory(category) {
+      const currentURL = new URL(window.location.href);
+      currentURL.searchParams.set('category', category);
+      window.location.href = currentURL.href;
+    }
+  });
 
 
 

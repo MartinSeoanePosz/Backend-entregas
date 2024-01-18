@@ -10,18 +10,20 @@ import viewsRouter from "./routes/viewsRouter.js";
 import ProductDBManager from './dao/dbManager/products.js';
 import MessageDBManager from './dao/dbManager/messages.js';
 
+
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8090;
 const productManager = new ProductDBManager();
 const messageManager = new MessageDBManager();
-const DB_URL = process.env.DB_URL || "mongodb://localhost:27017/ecommerce";
+const DB_URL = process.env.DB_URL || "mongodb://localhost:27017/ecommerceFinalProject";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + "/public"));
+
 
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
