@@ -1,6 +1,6 @@
 const socket = io();
 
-if (window.location.pathname === '/realtime' || '/realtime/') {
+if (window.location.pathname.includes("/realtime")) {
 const addProductBtn = document.getElementById("addProductBtn");
 const deleteProductBtn = document.getElementById("deleteProductBtn");
 addProductBtn.addEventListener("click", () => {

@@ -1,5 +1,5 @@
 const socket = io();
-if (window.location.pathname === '/chat' || '/chat/' ) {
+if (window.location.pathname.includes("/chat")) {
 let user = "";
 
 Swal.fire({
