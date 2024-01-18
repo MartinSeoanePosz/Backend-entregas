@@ -1,35 +1,33 @@
-<div>
-  
-<button class="category-button" data-category="Peripherals">Peripherals</button>
-<button class="category-button" data-category="Audio">Audio</button>
-<button class="category-button" data-category="Screens">Screens</button>
-<button class="category-button" data-category="">All</button>
-
+<div class="product-list-container">
+  <button class="category-button" data-category="Peripherals">Peripherals</button>
+  <button class="category-button" data-category="Audio">Audio</button>
+  <button class="category-button" data-category="Screens">Screens</button>
+  <button class="category-button" data-category="">All</button>
 </div>
-  <div class="productList">
-    {{#each products}}
-      <div class="productCard">
-        <div class="cardProduct__image">
-          {{#if this.thumbnail}}
-            <img src="{{this.thumbnail}}" alt="{{this.title}}" />
-          {{else}}
-            <img src="https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg" alt="No Thumbnail" />
-          {{/if}}
-        </div>
-        <div class="cardProduct__info">
-          <h3>{{this.title}}</h3>
-          <p>{{this.description}}</p>
-          <p>{{this.price}}</p>
-          <p>{{this.stock}}</p>
-          <p>{{this.code}}</p>
-          <p>{{this.category}}</p>
-        </div>
-      </div>
-    {{/each}}
-  </div>
-  
 
-<div>
+<div class="product-list">
+  {{#each products}}
+    <div class="product-card">
+      <div class="product-card-image">
+        {{#if this.thumbnail}}
+          <img src="{{this.thumbnail}}" alt="{{this.title}}" />
+        {{else}}
+          <img src="https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg" alt="No Thumbnail" />
+        {{/if}}
+      </div>
+      <div class="product-card-info">
+        <h3>{{this.title}}</h3>
+        <p>{{this.description}}</p>
+        <p>${{this.price}}</p>
+        <p>Stock: {{this.stock}}</p>
+        <p>Code: {{this.code}}</p>
+        <p>Category: {{this.category}}</p>
+      </div>
+    </div>
+  {{/each}}
+</div>
+
+<div class="pagination">
   {{#if hasPrevPage}}
     <a href="/products?page={{prevPage}}&limit={{limit}}&sortBy={{sortBy}}&sortOrder={{sortOrder}}&category={{selectedCategory}}"><button>Previous</button></a>
   {{/if}}
