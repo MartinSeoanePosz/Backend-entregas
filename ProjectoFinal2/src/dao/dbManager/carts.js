@@ -126,4 +126,12 @@ export default class CartDBManager {
             return null;
         }
     }
+    async getByEmail(email) {
+        try {
+          const cart = await this.cartModel.findOne({ email }).lean();
+          return cart;
+        } catch (error) {
+          console.log(error);
+        }
+      }
 }

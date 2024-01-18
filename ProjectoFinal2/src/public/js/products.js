@@ -93,8 +93,64 @@ if (window.location.pathname.includes("/products")){
     }
   });
 
+  document.addEventListener("DOMContentLoaded", async () => {
+    const { value: email } = await Swal.fire({
+      title: "Enter your email",
+      input: "email",
+      showCancelButton: true,
+    });
 
+    // Email for cart
+    let userEmailAddress = email || null;
 
+    // Add to cart butons
+    const addToCartButtons = document.querySelectorAll(".add-to-cart-button");
+    addToCartButtons.forEach(button => {
+      button.addEventListener("click", async () => {
+        const productId = button.dataset.productId;
 
+        if (!userEmailAddress) {
+          return; 
+        }
+        const response = await fetch(`/api/add-to-cart/${productId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: userEmailAddress }),
+        });
+
+        if (response.ok) {
+          console.log("Product added to cart!");
+        } else {
+          console.error("Failed to add product to cart");
+        }
+      });
+    });
+  });
+  document.addEventListener("DOMContentLoaded", async () => {
+    // ... existing code ...
+  
+    // Get the "Finish Shopping" button
+    const finishShoppingButton = document.getElementById("finishShoppingButton");
+  
+    // Add a click event listener to the "Finish Shopping" button
+    finishShoppingButton.addEventListener("click", async () => {
+      try {
+        // Make an AJAX request to fetch the current cart ID
+        const response = await fetch("/api/current-cart-id");
+        if (response.ok) {
+          const { cartId } = await response.json();
+  
+          // Redirect the user to the /cart/:cid page using the obtained cart ID
+          window.location.href = `/cart/${cartId}`;
+        } else {
+          console.error("Failed to fetch current cart ID");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  });
 
 }

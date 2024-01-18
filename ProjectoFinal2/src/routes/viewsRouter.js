@@ -2,7 +2,6 @@ import express from 'express';
 import ProductDBManager from '../dao/dbManager/products.js';
 import MessageDBManager from '../dao/dbManager/messages.js';
 import CartDBManager from '../dao/dbManager/carts.js';
-import { productModel } from '../dao/mongo/products.js';
 
 const router = express.Router();
 const productManager = new ProductDBManager();
@@ -37,7 +36,7 @@ router.get("/products", async (req, res) => {
         sortOrder,
       };
   
-      console.log('API Response:', response);
+      // console.log('API Response:', response);
 
       res.render("products", {
           title: "Product list",
@@ -63,6 +62,30 @@ router.get("/products", async (req, res) => {
   }
   });
 
+
+  router.post("/api/add-to-cart/:productId", async (req, res) => {
+    try {
+      const productId = req.params.productId;
+      const email = req.body.email;
+  
+      // Retrieve or create a cart based on the provided email
+      let cart = await cartManager.getByEmail(email);
+  
+      if (!cart) {
+        // Create a new cart if it doesn't exist
+        cart = await cartManager.add({ email });
+      }
+  
+      // Add the product to the cart (you might want to handle quantity, etc.)
+      await cartManager.addProductToCart(cart._id, productId);
+  
+      res.status(200).json({ message: 'Product added to cart successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
 // View and add/delete/update products
 router.get("/realtime", async (req, res) => {
   const products = await productManager.getAll();
@@ -75,6 +98,7 @@ router.get("/realtime", async (req, res) => {
 });
 
 // View cart products
+
 router.get("/cart/:cid", async (req, res) => {
   const cartId = req.params.cid;
   const cart = await cartManager.getById(cartId);

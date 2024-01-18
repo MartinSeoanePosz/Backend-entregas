@@ -1,5 +1,5 @@
 const socket = io();
-if (window.location.pathname.includes("/chat")) {
+if (window.location.pathname === '/chat' || '/chat/' ) {
 let user = "";
 
 Swal.fire({
@@ -88,5 +88,4 @@ socket.on("messageLogs", (data) => {
     });
   }
   
-  // firstLoad();
 }
