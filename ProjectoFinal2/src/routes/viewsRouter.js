@@ -33,7 +33,6 @@ router.get("/realtime", async (req, res) => {
 router.get("/cart/:cid", async (req, res) => {
   const cartId = req.params.cid;
   const cart = await cartManager.getById(cartId);
-  console.log("cart from the database", cart);
   res.render("cart", {
     title: "Carrito",
     cart: cart,
