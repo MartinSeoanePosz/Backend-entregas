@@ -6,7 +6,7 @@
         {{#if this.productId.thumbnail}}
           <img src="{{this.productId.thumbnail}}" alt="{{this.productId.title}}" />
         {{else}}
-          <img src="default-thumbnail.jpg" alt="No Thumbnail" />
+          <img src="https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg" alt="No Thumbnail" />
         {{/if}}
       </div>
       <div class="cardProduct__info">
@@ -15,7 +15,7 @@
         <p>{{this.productId.price}}</p>
         <p>{{this.productId.stock}}</p>
         <p>{{this.productId.code}}</p>
-        <p>Quantity: {{this.quantity}}</p> <!-- Quantity from the "products" array in the cart model -->
+        <p>Quantity: {{this.quantity}}</p>
       </div>
     </div>
   {{/each}}
