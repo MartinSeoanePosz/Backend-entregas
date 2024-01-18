@@ -60,3 +60,14 @@ function updateProductList(products) {
     productListContainer.innerHTML = "<p>No products available.</p>";
   }
 }
+
+
+if (window.location.pathname.includes("/products")){
+  
+
+
+
+
+
+
+}

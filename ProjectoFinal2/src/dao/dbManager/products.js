@@ -54,4 +54,14 @@ export default class ProductDBManager {
             console.log(error);
         }
     }
+    async paginate(query, options) {
+        try {
+            const products = await this.productModel.paginate(query, options);
+            return products;
+        } catch (error) {
+            console.log(error);
+            throw error; 
+        }
+    }
+    
 }

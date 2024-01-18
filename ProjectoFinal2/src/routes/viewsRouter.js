@@ -2,6 +2,7 @@ import express from 'express';
 import ProductDBManager from '../dao/dbManager/products.js';
 import MessageDBManager from '../dao/dbManager/messages.js';
 import CartDBManager from '../dao/dbManager/carts.js';
+import { productModel } from '../dao/mongo/products.js';
 
 const router = express.Router();
 const productManager = new ProductDBManager();
@@ -10,11 +11,22 @@ const cartManager = new CartDBManager();
 
 // View all products
 router.get("/products", async (req, res) => {
-    const products = await productManager.getAll();
+  const { page = 1 } = req.query;
+    const result = await productManager.paginate(
+      {},
+      { limit: 9, page, lean: true }
+    );
+    const { docs, hasPrevPage, hasNextPage, totalPages, prevPage, nextPage } =
+      result;
+      const products = docs;
     res.render("products", {
       title: "Listado de productos",
       products: products,
       style: "../css/products.css",
+      hasPrevPage,
+      hasNextPage,
+      nextPage,
+      prevPage,
     });
 });
 
