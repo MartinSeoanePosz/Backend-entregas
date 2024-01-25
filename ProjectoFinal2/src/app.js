@@ -9,6 +9,7 @@ import cartRouter from './routes/cartRouter.js';
 import viewsRouter from "./routes/viewsRouter.js";
 import ProductDBManager from './dao/dbManager/products.js';
 import MessageDBManager from './dao/dbManager/messages.js';
+import connectMongo from './db/indexdb.js'
 
 dotenv.config();
 
@@ -16,7 +17,6 @@ const app = express();
 const PORT = process.env.PORT || 8090;
 const productManager = new ProductDBManager();
 const messageManager = new MessageDBManager();
-const DB_URL = process.env.DB_URL || "mongodb://localhost:27017/ecommerce";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -115,9 +115,4 @@ socketServer.on("connection", (socket) => {
   });
 });
 
-mongoose.set('strictQuery', true);
-mongoose.connect(DB_URL).then(() => {
-  console.log("Database connected");
-}) .catch((err) => {
-  console.log("Error: ", err);
-});
+connectMongo();
