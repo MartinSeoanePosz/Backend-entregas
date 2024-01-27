@@ -10,5 +10,6 @@ const db = {
     host: process.env.DB_HOST,
     name: process.env.DB_NAME
 }
+const COOKIESECRET = process.env.COOKIESECRET
 
-export { PORT, db }
+export { PORT, db, COOKIESECRET}

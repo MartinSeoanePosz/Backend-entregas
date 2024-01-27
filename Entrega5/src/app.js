@@ -1,11 +1,11 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import { Server } from "socket.io";
 import { __dirname } from './fileUtils.js';
 import handlebars from "express-handlebars";
 import connectMongo from './db/indexdb.js'
-import MongoStore from "connect-mongo";
-import session from "express-session";
+import { PORT, COOKIESECRET } from './config/indexconfig.js'
+import sessionConfig from './config/sessionconfig.js'
+import dotenv from 'dotenv';
 import cookieParser from "cookie-parser";
 import productRouter from './routes/productRouter.js';
 import cartRouter from './routes/cartRouter.js';
@@ -16,12 +16,12 @@ import viewsRouter from "./routes/viewsRouter.js";
 import { handleProductSocketEvents, handleChatSocketEvents } from './sockets/socketEvents.js';
 
 dotenv.config();
-
 const app = express();
-const PORT = process.env.PORT || 8090;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser(COOKIESECRET));
+app.use(sessionConfig);
 
 app.use(express.static(__dirname + "/public"));
 
