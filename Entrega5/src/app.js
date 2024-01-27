@@ -10,9 +10,9 @@ import cookieParser from "cookie-parser";
 import productRouter from './routes/productRouter.js';
 import cartRouter from './routes/cartRouter.js';
 import viewsRouter from "./routes/viewsRouter.js";
-// import loginRouter from "./routes/login.routes.js";
-// import signupRouter from "./routes/signup.routes.js";
-// import sessionRouter from "./routes/session.routes.js";
+import loginRouter from "./routes/loginRouter.js";
+import signupRouter from "./routes/signupRouter.js";
+import sessionRouter from "./routes/sessionRouter.js";
 import { handleProductSocketEvents, handleChatSocketEvents } from './sockets/socketEvents.js';
 
 dotenv.config();
@@ -32,6 +32,9 @@ app.set("view engine", "handlebars");
 app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/", viewsRouter);
+app.use("/", sessionRouter);
+app.use("/login", loginRouter);
+app.use("/signup", signupRouter);
 
 const server = app.listen(PORT, () => {
   console.log("Server is running in port: " + PORT);

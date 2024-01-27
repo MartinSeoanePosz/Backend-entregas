@@ -128,29 +128,5 @@ if (window.location.pathname.includes("/products")){
       });
     });
   });
-  document.addEventListener("DOMContentLoaded", async () => {
-    // ... existing code ...
-  
-    // Get the "Finish Shopping" button
-    const finishShoppingButton = document.getElementById("finishShoppingButton");
-  
-    // Add a click event listener to the "Finish Shopping" button
-    finishShoppingButton.addEventListener("click", async () => {
-      try {
-        // Make an AJAX request to fetch the current cart ID
-        const response = await fetch("/api/current-cart-id");
-        if (response.ok) {
-          const { cartId } = await response.json();
-  
-          // Redirect the user to the /cart/:cid page using the obtained cart ID
-          window.location.href = `/cart/${cartId}`;
-        } else {
-          console.error("Failed to fetch current cart ID");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    });
-  });
 
 }
