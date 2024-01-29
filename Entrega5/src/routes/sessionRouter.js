@@ -14,7 +14,7 @@ router.post("/login", async (req, res) => {
     });
   } else {
     req.session.user = email;
-    req.session.role = "admin" || "user";
+    req.session.role = "user" || "admin";
     res.status(200).json({
       respuesta: "ok",
     });
@@ -50,13 +50,13 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-router.get("/products", auth, (req, res) => {
-  res.render("products", {
-    title: "products",
-    user: req.session.user,
-    role: req.session.role,
-  });
-});
+// router.get("/products", auth, (req, res) => {
+//   res.render("products", {
+//     title: "products",
+//     user: req.session.user,
+//     role: req.session.role,
+//   });
+// });
 router.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {

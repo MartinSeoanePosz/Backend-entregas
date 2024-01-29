@@ -2,6 +2,7 @@ import express from 'express';
 import ProductDBManager from '../dao/dbManager/products.js';
 import MessageDBManager from '../dao/dbManager/messages.js';
 import CartDBManager from '../dao/dbManager/carts.js';
+import  auth  from '../middleware/auth.js';
 
 const router = express.Router();
 const productManager = new ProductDBManager();
@@ -9,8 +10,14 @@ const messageManager = new MessageDBManager();
 const cartManager = new CartDBManager();
 
 // View all products
-router.get("/products", async (req, res) => {
+router.get("/products", auth, async (req, res) => {
   const { page = 1, limit = 9, sortBy = 'price', sortOrder = 'asc', category } = req.query;
+  const sessionData = {
+    email: req.session.user,
+    role: req.session.role,
+  };
+  console.log('Session:', sessionData);
+
   try {
       const result = await productManager.getProducts({
           category,
