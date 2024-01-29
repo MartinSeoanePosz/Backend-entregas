@@ -14,7 +14,7 @@ router.post("/login", async (req, res) => {
     });
   } else {
     req.session.user = email;
-    req.session.role = "admin";
+    req.session.role = "admin" || "user";
     res.status(200).json({
       respuesta: "ok",
     });
@@ -22,24 +22,19 @@ router.post("/login", async (req, res) => {
 });
 router.post("/signup", async (req, res) => {
   console.log(req.body);
-  const { first_name, last_name, email, password, age } = req.body;
+  const { email, password } = req.body;
 
   const newUser = {
-    first_name,
-    last_name,
     email,
     password,
-    age,
     role: "user",
   };
   console.log(email);
 
   const result = await User.create({
-    first_name,
-    last_name,
-    age,
     email,
     password,
+    role: "user",
   });
 
   if (result === null) {
@@ -55,10 +50,20 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-router.get("/private", auth, (req, res) => {
-  res.render("private", {
-    title: "private",
+router.get("/products", auth, (req, res) => {
+  res.render("products", {
+    title: "products",
     user: req.session.user,
+    role: req.session.role,
+  });
+});
+router.post("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error destroying session:', err);
+    } else {
+      res.redirect('/login');
+    }
   });
 });
 

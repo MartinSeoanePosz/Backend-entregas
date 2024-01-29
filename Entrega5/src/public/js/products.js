@@ -93,15 +93,10 @@ if (window.location.pathname.includes("/products")){
     }
   });
 
-  document.addEventListener("DOMContentLoaded", async () => {
-    const { value: email } = await Swal.fire({
-      title: "Enter your email",
-      input: "email",
-      showCancelButton: true,
-    });
+
 
     // Email for cart
-    let userEmailAddress = email || null;
+    // let userEmailAddress = email || null;
 
     // Add to cart butons
     const addToCartButtons = document.querySelectorAll(".add-to-cart-button");
@@ -127,6 +122,6 @@ if (window.location.pathname.includes("/products")){
         }
       });
     });
-  });
+  
 
 }

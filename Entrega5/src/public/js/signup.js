@@ -1,10 +1,7 @@
-async function postSignup(first_name, last_name, email, password, age) {
+async function postSignup(email, password) {
     const data = {
-      first_name,
-      last_name,
       email,
       password,
-      age,
     };
   
     const response = await fetch("/signup", {
@@ -23,13 +20,10 @@ async function postSignup(first_name, last_name, email, password, age) {
   
   signupForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const first_name = document.getElementById("first_name").value;
-    const last_name = document.getElementById("last_name").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    const age = document.getElementById("age").value;
-    const result = await postSignup(first_name, last_name, email, password, age);
-    if (result.respuesta === "Usuario creado con éxito") {
+    const result = await postSignup(email, password);
+    if (result.respuesta === "User created successfully") {
       window.location.href = "/login";
     } else {
       alert("Wrong credentials");
