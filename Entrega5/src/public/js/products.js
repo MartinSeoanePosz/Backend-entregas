@@ -83,3 +83,22 @@
     });
 
 
+    document.addEventListener('DOMContentLoaded', () => {
+      const logoutButton = document.getElementById('logout-button');
+      if (logoutButton) {
+        logoutButton.addEventListener('click', async () => {
+          const response = await fetch('/logout', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });  
+          if (response.ok) {
+            document.cookie = 'userData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            window.location.href = '/login';
+          } else {
+            console.error('Failed to logout');
+          }
+        });
+      }
+    });

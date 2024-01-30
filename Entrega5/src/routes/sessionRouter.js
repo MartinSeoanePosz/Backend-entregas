@@ -16,7 +16,7 @@ router.post("/login", async (req, res) => {
     req.session.user = email;
     req.session.role = result.role;
 
-    res.cookie('userData', JSON.stringify({ user: email, role: result.role }), { httpOnly: true });
+    res.cookie('userData', JSON.stringify({ user: email, role: result.role }), { httpOnly: true, maxAge: 20000});
     console.log( "result:", result.email, result.role)
 
     res.status(200).json({
@@ -53,19 +53,14 @@ router.post("/signup", async (req, res) => {
     });
   }
 });
-
-// router.get("/products", auth, (req, res) => {
-//   res.render("products", {
-//     title: "products",
-//     user: req.session.user,
-//     role: req.session.role,
-//   });
-// });
-router.post("/logout", (req, res) => {
+router.post('/logout', (req, res) => {
+  console.log('Logging out user:', req.session.user);
   req.session.destroy((err) => {
     if (err) {
       console.error('Error destroying session:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
     } else {
+      // Redirect to the login page after successful logout
       res.redirect('/login');
     }
   });
