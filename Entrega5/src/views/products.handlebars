@@ -37,3 +37,9 @@
     <a href="/products?page={{nextPage}}&limit={{limit}}&sortBy={{sortBy}}&sortOrder={{sortOrder}}&category={{selectedCategory}}"><button>Next</button></a>
   {{/if}}
 </div>
+<script>
+  window.user = "{{ user }}";
+  window.role = "{{ role }}";
+</script>
+
+<script type="module" src="js/products.js"></script>

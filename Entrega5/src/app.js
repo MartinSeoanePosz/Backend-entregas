@@ -36,6 +36,8 @@ app.use("/", sessionRouter);
 app.use("/login", loginRouter);
 app.use("/signup", signupRouter);
 
+
+
 const server = app.listen(PORT, () => {
   console.log("Server is running in port: " + PORT);
 });

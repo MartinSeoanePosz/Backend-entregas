@@ -14,7 +14,11 @@ router.post("/login", async (req, res) => {
     });
   } else {
     req.session.user = email;
-    req.session.role = "user" || "admin";
+    req.session.role = result.role;
+
+    res.cookie('userData', JSON.stringify({ user: email, role: result.role }), { httpOnly: true });
+    console.log( "result:", result.email, result.role)
+
     res.status(200).json({
       respuesta: "ok",
     });

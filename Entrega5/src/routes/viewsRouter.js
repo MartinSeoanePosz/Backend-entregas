@@ -58,6 +58,8 @@ router.get("/products", auth, async (req, res) => {
           selectedCategory: category,
           sortBy,
           sortOrder,
+          user: sessionData.email,
+          role: sessionData.role,
       });
   } catch (error) {
     console.log('API Error:', error);
