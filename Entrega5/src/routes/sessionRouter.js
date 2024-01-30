@@ -60,7 +60,6 @@ router.post('/logout', (req, res) => {
       console.error('Error destroying session:', err);
       res.status(500).json({ error: 'Internal Server Error' });
     } else {
-      // Redirect to the login page after successful logout
       res.redirect('/login');
     }
   });
