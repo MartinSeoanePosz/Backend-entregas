@@ -51,8 +51,6 @@ passport.use(
             passwordField: "password",
         },
         async (req, email, password, done) => {
-            console.log("LocalStrategy called with email:", email);
-            console.log("LocalStrategy called with password:", password);
             try {
                 const user = await User.findOne({ email });
 
