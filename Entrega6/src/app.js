@@ -1,19 +1,21 @@
 import express from 'express';
 import { Server } from "socket.io";
-import { __dirname } from './fileUtils.js';
 import handlebars from "express-handlebars";
+import dotenv from 'dotenv';
+import cookieParser from "cookie-parser";
+import passport from "passport";
 import connectMongo from './db/indexdb.js'
 import { PORT, COOKIESECRET } from './config/indexconfig.js'
 import sessionConfig from './config/sessionconfig.js'
-import dotenv from 'dotenv';
-import cookieParser from "cookie-parser";
+import initializePassport from './config/passportconfig.js';
+import { handleProductSocketEvents, handleChatSocketEvents } from './sockets/socketEvents.js';
 import productRouter from './routes/productRouter.js';
 import cartRouter from './routes/cartRouter.js';
 import viewsRouter from "./routes/viewsRouter.js";
 import loginRouter from "./routes/loginRouter.js";
 import signupRouter from "./routes/signupRouter.js";
 import sessionRouter from "./routes/sessionRouter.js";
-import { handleProductSocketEvents, handleChatSocketEvents } from './sockets/socketEvents.js';
+import { __dirname } from './fileUtils.js';
 
 dotenv.config();
 const app = express();
@@ -29,13 +31,16 @@ app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/", viewsRouter);
 app.use("/", sessionRouter);
 app.use("/login", loginRouter);
 app.use("/signup", signupRouter);
-
 
 
 const server = app.listen(PORT, () => {

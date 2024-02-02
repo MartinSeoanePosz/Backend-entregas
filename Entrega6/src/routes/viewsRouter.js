@@ -16,7 +16,7 @@ router.get("/products", auth, async (req, res) => {
     email: req.session.user,
     role: req.session.role,
   };
-  console.log('Session:', sessionData);
+
 
   try {
       const result = await productManager.getProducts({
