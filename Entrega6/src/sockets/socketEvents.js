@@ -68,8 +68,13 @@ const handleChatSocketEvents = (socket) => {
 
   socket.on("message", async (data) => {
     try {
+      const user = data.user;
+      if (!user) {
+        console.error("Error: 'user' is required in the message data.");
+        return;
+      }
       const savedMessage = await messageManager.save({
-        user: data.user,
+        user,
         message: data.message,
         date: new Date().toISOString(),
       });

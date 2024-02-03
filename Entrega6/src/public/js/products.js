@@ -81,7 +81,15 @@ document.addEventListener('DOMContentLoaded', function () {
     confirmButtonText: 'Got it!'
   });
 });
-
+//Chat button
+document.addEventListener('DOMContentLoaded', () => {
+  const chatButton = document.getElementById('chat-button');
+  if (chatButton) {
+    chatButton.addEventListener('click', () => {
+      window.location.href = '/chat';
+    });
+  }
+});
 //Logout button
 document.addEventListener('DOMContentLoaded', () => {
   const logoutButton = document.getElementById('logout-button');

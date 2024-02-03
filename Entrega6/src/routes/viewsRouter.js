@@ -76,16 +76,11 @@ router.get("/products", auth, async (req, res) => {
     try {
       const productId = req.params.productId;
       const email = req.body.email;
-  
-      // Retrieve or create a cart based on the provided email
       let cart = await cartManager.getByEmail(email);
   
       if (!cart) {
-        // Create a new cart if it doesn't exist
         cart = await cartManager.add({ email });
       }
-  
-      // Add the product to the cart (you might want to handle quantity, etc.)
       await cartManager.addProductToCart(cart._id, productId);
   
       res.status(200).json({ message: 'Product added to cart successfully' });
@@ -107,7 +102,6 @@ router.get("/realtime", async (req, res) => {
 });
 
 // View cart products
-
 router.get("/cart/:cid", async (req, res) => {
   const cartId = req.params.cid;
   const cart = await cartManager.getById(cartId);
@@ -119,11 +113,14 @@ router.get("/cart/:cid", async (req, res) => {
 });
 
 // Chat
-
 router.get("/chat", (req, res) => {
+  const user = req.session.user;
+
+  res.cookie('userData', JSON.stringify({ user: user }), { httpOnly: true, maxAge: 20000 });
   const messages = messageManager.getAll();
   res.render("chat", { 
     title: "Chat", 
+    user: user,
     messages: messages,
     style: "../css/chat.css" });
 });
