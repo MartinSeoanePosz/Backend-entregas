@@ -68,7 +68,7 @@ passport.use(
                 return done(error);
             }
         }
-    )
+    )    
 );
 
 export default initializePassport;

@@ -8,6 +8,7 @@ import connectMongo from './db/indexdb.js'
 import { PORT, COOKIESECRET } from './config/indexconfig.js'
 import sessionConfig from './config/sessionconfig.js'
 import initializePassport from './config/passportconfig.js';
+import gitHubPassport from './config/gitHubPassport.js';
 import { handleProductSocketEvents, handleChatSocketEvents } from './sockets/socketEvents.js';
 import productRouter from './routes/productRouter.js';
 import cartRouter from './routes/cartRouter.js';
@@ -32,6 +33,7 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
 initializePassport();
+gitHubPassport();
 app.use(passport.initialize());
 app.use(passport.session());
 

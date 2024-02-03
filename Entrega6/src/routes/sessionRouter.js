@@ -70,4 +70,26 @@ router.get("/failRegister", (req, res) => {
   });
 });
 
+router.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"] }),
+  async (req, res) => {}
+);
+
+router.get(
+  "/githubcallback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  async (req, res) => {
+    const email = req.user.email;
+    const role = req.user.role;
+
+    req.session.user = email;
+    req.session.role = role;
+
+    res.cookie('userData', JSON.stringify({ user: email, role }), { httpOnly: true, maxAge: 20000 });
+
+    res.redirect("/products");
+  }
+);
+
 export default router;
