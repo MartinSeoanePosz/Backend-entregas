@@ -107,11 +107,12 @@ router.get("/current", async (req, res) => {
     if (!req.session.user) {
       return res.status(401).json({ error: "User not logged in" });
     }
-    const currentUser = await User.findOne({ email: req.session.user }).populate("cart");
+    const currentUser = await User.findOne({ email: req.session.user });
 
     if (!currentUser) {
       return res.status(404).json({ error: "User not found" });
     }
+
     const userInfo = {
       firstName: currentUser.firstName,
       lastName: currentUser.lastName,
@@ -121,7 +122,7 @@ router.get("/current", async (req, res) => {
       cart: currentUser.cart
     };
 
-    res.status(200).json(userInfo);
+    res.render('current', { title: 'Current', style: '../css/current.css', userInfo });
   } catch (error) {
     console.error("Error retrieving current user:", error);
     res.status(500).json({ error: "Internal Server Error" });
