@@ -1,5 +1,6 @@
 const user = window.user;
 const role = window.role;
+const cartId = window.cartId;
   
 function changeLimit(newLimit) {
   window.location.href = `/products?page={{page}}&limit=${newLimit}&sortBy={{sortBy}}&sortOrder={{sortOrder}}&category={{category}}`;

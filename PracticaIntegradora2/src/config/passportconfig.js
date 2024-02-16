@@ -14,13 +14,16 @@ const initializePassport = () => {
                 usernameField: "email",
             },
             async (req, username, password, done) => {
-                const { email } = req.body;
+                const { firstName, lastName, age, email } = req.body;
                 try {
                     const user = await User.findOne({ email: username });
                     if (user) {
                         return done(null, false, { message: "User already exists" });
                     }
                     const newUser = new User({ 
+                        firstName,
+                        lastName,
+                        age,
                         email, 
                         password: hashPassword(password) 
                     });

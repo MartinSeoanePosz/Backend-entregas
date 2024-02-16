@@ -15,6 +15,7 @@ router.get("/products", auth, async (req, res) => {
   const sessionData = {
     email: req.session.user,
     role: req.session.role,
+    cartId: req.session.cartId,
   };
 
 
@@ -60,6 +61,7 @@ router.get("/products", auth, async (req, res) => {
           sortOrder,
           user: sessionData.email,
           role: sessionData.role,
+          cartId: sessionData.cartId,
       });
   } catch (error) {
     console.log('API Error:', error);
@@ -75,13 +77,8 @@ router.get("/products", auth, async (req, res) => {
   router.post("/api/add-to-cart/:productId", async (req, res) => {
     try {
       const productId = req.params.productId;
-      const email = req.body.email;
-      let cart = await cartManager.getByEmail(email);
-  
-      if (!cart) {
-        cart = await cartManager.add({ email });
-      }
-      await cartManager.addProductToCart(cart._id, productId);
+      const cartId = req.session.cartId;
+      await cartManager.addProductToCart(cartId, productId);
   
       res.status(200).json({ message: 'Product added to cart successfully' });
     } catch (error) {
