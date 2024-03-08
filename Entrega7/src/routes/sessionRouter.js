@@ -1,6 +1,5 @@
 import express from 'express';
 import sessionController from '../controllers/sessionController.js';
-import { auth } from '../middleware/index.js';
 import passport from 'passport';
 
 const router = express.Router();
