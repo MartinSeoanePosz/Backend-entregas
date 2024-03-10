@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Ticket Generated Successfully',
             html: `
               <p><strong>Ticket Code:</strong> ${ticketData.ticket.code}</p>
-              <p><strong>Total Amount:</strong> ${ticketData.ticket.totalAmount}</p>
+              <p><strong>Total Products:</strong> ${ticketData.ticket.totalAmount}</p>
             `,
             icon: 'success',
             showCloseButton: true,

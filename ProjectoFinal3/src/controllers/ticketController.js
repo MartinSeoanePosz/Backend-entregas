@@ -22,7 +22,6 @@ export const generateTicket = async (req, res) => {
             if (productData && productData.stock >= quantityInCart) {
                 purchasedProducts.push({ productId, quantity: quantityInCart });
             } else {
-
                 unpurchasedProducts.push({ productId, quantity: quantityInCart });
             }
         }
@@ -30,7 +29,7 @@ export const generateTicket = async (req, res) => {
         const newTicket = new ticketModel({
             cart: cartData._id,
             purchaser: req.session.user,
-            products: purchasedProducts
+            totalAmount: purchasedProducts.reduce((acc, curr) => acc + curr.quantity, 0) 
         });
         await newTicket.save();
 

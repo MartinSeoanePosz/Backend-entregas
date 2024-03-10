@@ -14,26 +14,6 @@ const ticketSchema = new mongoose.Schema({
     purchaser: { type: String, required: true },
 });
 
-ticketSchema.pre('save', async function(next) {
-    try {
-        const Cart = mongoose.model('carts');
-        const cart = await Cart.findById(this.cart);
-        
-        if (!cart) {
-            throw new Error('Cart not found');
-        }
-        
-        let totalAmount = 0;
-        cart.products.forEach(product => {
-            totalAmount += product.quantity;
-        });
-        
-        this.totalAmount = totalAmount;
-        next();
-    } catch (error) {
-        next(error);
-    }
-});
 
 ticketSchema.pre('save', async function(next) {
     try {
