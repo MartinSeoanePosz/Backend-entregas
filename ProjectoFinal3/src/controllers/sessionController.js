@@ -1,9 +1,12 @@
+import passport from 'passport';
 import User from '../dao/models/users.js';
 import { CartRepository } from '../repositories/cartRepository.js';
-import passport from 'passport';
+import { ProductRepository } from '../repositories/productRepository.js';
 import { hashPassword, isValidPassword } from '../fileUtils.js';
+import { UserDTO } from '../dao/dto/userDTO.js';
 
 const cartRepository = new CartRepository();
+const productManager = new ProductRepository();
 
 const sessionController = {
   login: async (req, res) => {
@@ -19,7 +22,7 @@ const sessionController = {
 
       let cart = await cartRepository.getById(result.cart);
       if (!cart) {
-        const newCart = await cartRepository.create({ userId: result._id });
+        const newCart = await cartRepository.add({ userId: result._id });
         cart = newCart;
       }
       if (!result.cart.includes(cart._id)) {
@@ -29,8 +32,13 @@ const sessionController = {
       req.session.cartId = cart._id;
       req.session.user = email;
       req.session.role = result.role;
-
       res.cookie('userData', JSON.stringify({ user: email, role: result.role, cart: req.session.cartId }), { httpOnly: true, maxAge: 20000 });
+
+      if (result.role === 'user') {
+        return res.redirect('/products');
+      } else if (result.role === 'admin') {
+        return res.redirect('/realtime');
+      }
 
       res.status(200).json({
         respuesta: "ok",
@@ -40,7 +48,6 @@ const sessionController = {
       return res.status(400).json({ error: "Wrong credentials" });
     }
   },
-
   signup: (req, res, next) => {
     passport.authenticate("register", (err, user, info) => {
       if (err) {
@@ -92,27 +99,32 @@ const sessionController = {
       if (!req.session.user) {
         return res.status(401).json({ error: "User not logged in" });
       }
+  
       const currentUser = await User.findOne({ email: req.session.user });
-
+  
       if (!currentUser) {
         return res.status(404).json({ error: "User not found" });
       }
-
-      const userInfo = {
-        firstName: currentUser.firstName,
-        lastName: currentUser.lastName,
-        age: currentUser.age,
-        email: currentUser.email,
-        role: currentUser.role,
-        cart: currentUser.cart
-      };
-
+  
+      const cart = await cartRepository.getById(currentUser.cart);
+  
+      const userInfo = new UserDTO(currentUser);
+  
       res.render('current', { title: 'Current', style: '../css/current.css', userInfo });
     } catch (error) {
       console.error("Error retrieving current user:", error);
       res.status(500).json({ error: "Internal Server Error" });
     }
-  }
+  },
+  modifyProducts: async (req, res) => {
+    const products = await productManager.getAll();
+    res.render("realtime", {
+      title: "Add or remove products",
+      products: products,
+      style: "../css/products.css",
+    });
+  },
 };
+
 
 export default sessionController;

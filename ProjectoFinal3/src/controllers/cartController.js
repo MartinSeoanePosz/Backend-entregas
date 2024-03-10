@@ -73,6 +73,16 @@ const cartController = {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
+  },
+  purchaseCartById: async (req, res) => {
+    try {
+      const cartId = req.params.id;
+      const cart = await cartRepository.getById(cartId);
+      res.render('cartPurchase', { title: 'Purchase', style: '../css/cart.css', cart: cart });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
 };
 

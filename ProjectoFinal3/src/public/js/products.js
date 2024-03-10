@@ -91,6 +91,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+//Cart button
+document.addEventListener('DOMContentLoaded', () => {
+  const cartButton = document.getElementById('cart-button');
+
+  if (cartButton) {
+    cartButton.addEventListener('click', () => {
+      const cartId = window.cartId;
+      if (cartId) {
+
+        window.location.href = '/' + cartId + '/purchase';
+      } else {
+        console.error('No cartId found');
+      }
+    });
+  }
+});
 //Logout button
 document.addEventListener('DOMContentLoaded', () => {
   const logoutButton = document.getElementById('logout-button');

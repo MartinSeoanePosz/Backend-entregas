@@ -83,7 +83,7 @@ const viewsController = {
 
   viewRealtimeProducts: async (req, res) => {
     const products = await productManager.getAll();
-    console.log("products from the database", products);
+    // console.log("products from the database", products);
     res.render("realtime", {
       title: "Productos en tiempo real",
       products: products,

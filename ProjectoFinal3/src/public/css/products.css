@@ -86,7 +86,6 @@ body {
   background-color: var(--secondary-color);
 }
   
-  /* Enterprise business color palette */
   :root {
     --primary-color: #007bff;
     --secondary-color: #0056b3;

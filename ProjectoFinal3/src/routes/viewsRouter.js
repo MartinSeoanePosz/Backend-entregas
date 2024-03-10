@@ -5,9 +5,9 @@ import auth from '../middleware/auth.js';
 const router = express.Router();
 
 router.get("/products", auth, viewsController.viewAllProducts);
-router.post("/api/add-to-cart/:productId", viewsController.addToCart);
-router.get("/realtime", viewsController.viewRealtimeProducts);
-router.get("/cart/:cid", viewsController.viewCartProducts);
-router.get("/chat", viewsController.viewChat);
+router.post("/api/add-to-cart/:productId", auth, viewsController.addToCart);
+router.get("/realtime", auth, viewsController.viewRealtimeProducts);
+router.get("/cart/:cid", auth, viewsController.viewCartProducts);
+router.get("/chat", auth, viewsController.viewChat);
 
 export default router;
