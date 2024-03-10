@@ -67,8 +67,22 @@ const cartController = {
   removeProductFromCart: async (req, res) => {
     const { id, pid } = req.params;
     try {
-      const response = await cartRepository.removeProductFromCart(id, pid);
-      res.json(response);
+      const cart = await cartRepository.getById(id);
+      if (!cart) {
+        return res.status(404).json({ error: 'Cart not found' });
+      }
+      const productIndex = cart.products.findIndex(product => product.productId === pid);
+      if (productIndex === -1) {
+        return res.status(404).json({ error: 'Product not found in cart' });
+      }
+      if (cart.products[productIndex].quantity > 1) {
+        cart.products[productIndex].quantity -= 1;
+      } else {
+        cart.products.splice(productIndex, 1);
+      }
+      await cart.save();
+  
+      res.json({ message: 'Product removed from cart' });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });

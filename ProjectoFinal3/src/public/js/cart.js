@@ -17,7 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!response.ok) {
             throw new Error('Failed to generate ticket');
           }
+
           const ticketData = await response.json();
+          console.log('Ticket Data:', ticketData);
+          console.log('Ticket:', ticketData.ticket);
           Swal.fire({
             title: 'Ticket Generated Successfully',
             html: `
