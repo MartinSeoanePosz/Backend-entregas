@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try{
     const {products} = listOfProducts();
-    console.log(products);
+    // console.log(products);
     res.render("mockProducts",{
         title: "Mocking Products",
         data: products,

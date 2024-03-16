@@ -2,7 +2,7 @@ import {faker} from '@faker-js/faker';
 
 
 export const listOfProducts = () => {
-    const numOfProducts = 10;
+    const numOfProducts = 100;
     const products = [];
     for(let i = 0; i < numOfProducts; i++){
         products.push(generateProducts());
