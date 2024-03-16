@@ -1,28 +1,25 @@
 import { ProductRepository } from '../repositories/productRepository.js';
 import { MessageRepository } from '../repositories/messagesRepository.js';
+import CustomError from '../services/customError.js';
+import {generateProductErrorInfo} from '../services/info.js';
+import EErrors from '../services/enum.js';
 
 const productManager = new ProductRepository();
 const messageManager = new MessageRepository();
 
 const handleProductSocketEvents = (socket) => {
   socket.on("addProduct", async (product) => {
-    const title = product.title;
-    const description = product.description;
-    const price = product.price;
-    const thumbnail = product.thumbnail;
-    const code = product.code;
-    const category = product.category;
-    const stock = product.stock;
-    try {
-      const result = await productManager.save(
-        title,
-        description,
-        price,
-        thumbnail,
-        code,
-        category,
-        stock
-      );
+    try{
+    const { title, description, price, thumbnail, code, category, stock } = product;
+    if (!title || !description || !price || !thumbnail || !code || !category || !stock) {
+      throw new CustomError({
+        name: "InvalidProduct",
+        message: "One or more fields are invalid or missing",
+        code: EErrors.INVALID_PRODUCT,
+        cause: generateProductErrorInfo(product),
+      });
+    }
+      const result = await productManager.save(product);
       const allProducts = await productManager.getAll();
       console.log(allProducts);
       result && socket.emit("update", allProducts);

@@ -1,4 +1,7 @@
 import { CartRepository } from '../repositories/cartRepository.js';
+import CustomError from '../services/customError.js';
+import EErrors from "../services/enum.js";
+import {generateAddToCartErrorInfo} from '../services/info.js';
 
 const cartRepository = new CartRepository();
 
@@ -59,9 +62,13 @@ const cartController = {
       const response = await cartRepository.addProductToCart(id, pid, quantity);
       res.json(response);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
+      throw new CustomError({
+          name: "FailedToAddProduct",
+          message: "Failed to add product to cart",
+          code: EErrors.FAILED_TO_ADD_PRODUCT,
+          cause: generateCartErrorInfo(req.body),
+      });
+  }
   },
 
   removeProductFromCart: async (req, res) => {

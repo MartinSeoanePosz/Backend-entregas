@@ -10,15 +10,15 @@ addProductBtn.addEventListener("click", () => {
   const code = document.getElementById("code").value;
   const category = document.getElementById("category").value;
   const stock = document.getElementById("stock").value;
-  console.log(title, description, price, thumbnail, code, category, stock);
+  // console.log(title, description, price, thumbnail, code, category, stock);
   const product = {
-    title,
-    description,
-    price,
-    thumbnail,
-    code,
-    category,
-    stock,
+    title: title,
+    description: description,
+    price: price,
+    thumbnail: thumbnail,
+    code: code,
+    category: category,
+    stock: stock,
   };
 
   socket.emit("addProduct", product);

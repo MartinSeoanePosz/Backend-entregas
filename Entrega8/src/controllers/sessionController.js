@@ -4,6 +4,10 @@ import { CartRepository } from '../repositories/cartRepository.js';
 import { ProductRepository } from '../repositories/productRepository.js';
 import { hashPassword, isValidPassword } from '../fileUtils.js';
 import { UserDTO } from '../dao/dto/userDTO.js';
+import CustomError from '../services/customError.js';
+import { generateUserErrorInfo } from '../services/info.js';
+import EErrors from '../services/enum.js';
+
 
 const cartRepository = new CartRepository();
 const productManager = new ProductRepository();
@@ -15,10 +19,13 @@ const sessionController = {
       const result = await User.findOne({ email });
 
       if (!result || !isValidPassword(result.password, password)) {
-        return res.status(400).json({
-          error: "Wrong credentials",
+        throw new CustomError({
+            name: "InvalidCredentials",
+            message: "Invalid email or password",
+            code: EErrors.AUTHENTICATION_ERROR,
+            cause: generateUserErrorInfo(req.body)
         });
-      }
+    }
 
       let cart = await cartRepository.getById(result.cart);
       if (!cart) {

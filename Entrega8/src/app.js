@@ -5,20 +5,11 @@ import dotenv from 'dotenv';
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import connectMongo from './db/indexdb.js'
-import { PORT, COOKIESECRET } from './config/indexconfig.js'
-import sessionConfig from './config/sessionconfig.js'
-import initializePassport from './config/passportconfig.js';
-import gitHubPassport from './config/gitHubPassport.js';
+import { PORT, COOKIESECRET, sessionConfig, initializePassport, gitHubPassport } from './config/index.js';
 import { handleProductSocketEvents, handleChatSocketEvents } from './sockets/socketEvents.js';
-import productRouter from './routes/productRouter.js';
-import cartRouter from './routes/cartRouter.js';
-import viewsRouter from "./routes/viewsRouter.js";
-import loginRouter from "./routes/loginRouter.js";
-import signupRouter from "./routes/signupRouter.js";
-import sessionRouter from "./routes/sessionRouter.js";
-import mockingRouter from "./routes/mockRoutes.js";
+import { productRouter, cartRouter, viewsRouter, loginRouter, signupRouter, sessionRouter, mockingRouter } from './routes/index.js';
+import { auth, errorHandler } from './middleware/index.js';
 import { __dirname } from './fileUtils.js';
-import auth from './middleware/auth.js';
 
 dotenv.config();
 const app = express();
@@ -33,6 +24,8 @@ app.use(express.static(__dirname + "/public"));
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
+
+app.use(errorHandler);
 
 initializePassport();
 gitHubPassport();
