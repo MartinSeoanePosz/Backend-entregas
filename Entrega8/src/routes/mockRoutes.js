@@ -3,15 +3,20 @@ import {listOfProducts} from '../helpers/mockProducts.js';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    const products = [];
-    for (let i = 0; i < 10; i++) {
-        products.push(listOfProducts());
-    }
-    res.json({
+router.get('/', async (req, res) => {
+    try{
+    const {products} = listOfProducts();
+    console.log(products);
+    res.render("mockProducts",{
+        title: "Mocking Products",
         data: products,
-        count: products.length,
+        style: "../css/products.css",
     });
+}
+catch (err) {
+    console.error("Error:", err);
+    res.status(500).send("Internal Server Error");
+}
 });
 
 export default router;
