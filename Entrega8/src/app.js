@@ -16,6 +16,7 @@ import viewsRouter from "./routes/viewsRouter.js";
 import loginRouter from "./routes/loginRouter.js";
 import signupRouter from "./routes/signupRouter.js";
 import sessionRouter from "./routes/sessionRouter.js";
+import mockingRouter from "./routes/mockRoutes.js";
 import { __dirname } from './fileUtils.js';
 import auth from './middleware/auth.js';
 
@@ -44,6 +45,7 @@ app.use("/", viewsRouter);
 app.use("/", sessionRouter);
 app.use("/login", loginRouter);
 app.use("/signup", signupRouter);
+app.use("/mockingproducts", mockingRouter);
 
 app.use(auth);
 
