@@ -4,8 +4,7 @@ import handlebars from "express-handlebars";
 import dotenv from 'dotenv';
 import cookieParser from "cookie-parser";
 import passport from "passport";
-import connectMongo from './db/indexdb.js'
-import { PORT, COOKIESECRET, sessionConfig, initializePassport, gitHubPassport } from './config/index.js';
+import { PORT, COOKIESECRET, sessionConfig, initializePassport, gitHubPassport, connectMongo } from './config/index.js';
 import { handleProductSocketEvents, handleChatSocketEvents } from './sockets/socketEvents.js';
 import { productRouter, cartRouter, viewsRouter, loginRouter, signupRouter, sessionRouter, mockingRouter } from './routes/index.js';
 import { auth, errorHandler } from './middleware/index.js';

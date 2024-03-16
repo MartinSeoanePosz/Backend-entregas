@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { db } from "../config/indexconfig.js";
+import { db } from "./indexconfig.js";
 
 dotenv.config();
 
