@@ -60,7 +60,7 @@ const viewsController = {
         cartId: sessionData.cartId,
       });
     } catch (error) {
-      console.error('API Error:', error);
+      logger.error("API error",error.stack || error.message);
       res.status(500).json({
         status: 'error',
         payload: null,
@@ -77,7 +77,7 @@ const viewsController = {
 
       res.status(200).json({ message: 'Product added to cart successfully' });
     } catch (error) {
-      console.error(error);
+      logger.warn(error.stack || error.message);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   },

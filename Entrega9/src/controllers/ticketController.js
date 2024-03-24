@@ -42,7 +42,7 @@ export const generateTicket = async (req, res) => {
             ticket: newTicket
         });
     } catch (error) {
-        console.error('Error generating ticket:', error);
+        logger.error("Error generating ticket: ", error.stack || error.message);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };

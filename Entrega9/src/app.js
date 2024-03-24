@@ -44,7 +44,7 @@ app.use("/loggerTest", loggerTest);
 app.use(auth);
 
 const server = app.listen(PORT, () => {
-  console.log("Server is running in port: " + PORT);
+  // console.log("Server is running in port: " + PORT);
 });
 
 const socketServer = new Server(server);
